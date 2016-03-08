@@ -18,6 +18,7 @@ last_artist_id = nil
 
 while batch = user.following(type: "artist", limit: 50, after: last_artist_id)
   artists = artists.concat(batch)
+  break if ENV["DEBUG"]
 
   if batch.count < 50
     break
@@ -28,7 +29,7 @@ end
 
 puts "Artists: #{artists.count}"
 
-all_albums = artists.flat_map do |artist|
+releases = artists.flat_map do |artist|
   albums = []
   offset = 0
 
@@ -47,14 +48,17 @@ all_albums = artists.flat_map do |artist|
   albums
 end
 
-puts "Albums: #{all_albums.count}"
+puts "Albums: #{releases.count}"
 
-titles = all_albums.sort_by(&:release_date).select do |x|
+titles = releases.select do |x|
   x.available_markets.include?("US")
-end.reverse.take(200).select do |x|
-  Date.parse(x.release_date).between?(1.day.ago.to_date, 1.day.from_now.to_date)
 end.map do |album|
   "#{album.release_date} - #{album.artists.map(&:name).join(", ")} - #{album.name} - #{album.external_urls["spotify"]}"
-end.uniq
+end.uniq.sort.join("\n") + "\n"
 
-puts titles
+cache = File.exists?("./cache") ? File.read("./cache") : ""
+
+puts "Diff:"
+puts Diffy::Diff.new(cache, titles, context: 0)
+
+File.open("./cache", "w") { |f| f.write(titles) }

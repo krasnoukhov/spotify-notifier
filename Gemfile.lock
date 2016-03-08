@@ -7,6 +7,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+    diffy (3.1.0)
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.0.2)
@@ -56,8 +57,9 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 4.2.0)
+  diffy (~> 3.1.0)
   dotenv (~> 2.0.0)
   rspotify (~> 1.15.0)
 
 BUNDLED WITH
-   1.10.5
+   1.11.2
