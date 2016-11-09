@@ -43,6 +43,8 @@ releases = artists.flat_map do |artist|
     else
       offset = offset + 20
     end
+
+    sleep 0.1
   end
 
   albums
