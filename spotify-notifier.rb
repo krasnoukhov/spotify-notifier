@@ -1,7 +1,5 @@
 require "bundler/setup"
 Bundler.require(:default)
-require "active_support"
-require "active_support/core_ext"
 Dotenv.load
 RSpotify.authenticate(ENV["SPOTIFY_KEY"], ENV["SPOTIFY_SECRET"])
 
@@ -44,7 +42,7 @@ releases = artists.flat_map do |artist|
       offset = offset + 20
     end
 
-    sleep 0.1
+    sleep 2
   end
 
   albums
