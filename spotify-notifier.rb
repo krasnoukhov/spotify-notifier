@@ -14,7 +14,7 @@ user = RSpotify::User.new({
 artists = []
 last_artist_id = nil
 
-while batch = user.following(type: "artist", limit: 50, after: last_artist_id)
+while batch = user.following(type: "artist", limit: ENV["DEBUG"] ? 10 : 50, after: last_artist_id)
   artists = artists.concat(batch)
   break if ENV["DEBUG"]
 
@@ -28,12 +28,18 @@ end
 puts "Artists: #{artists.count}"
 
 releases = artists.flat_map do |artist|
-  albums = []
+  results = []
   offset = 0
 
   while batch = artist.albums(limit: 20, offset: offset, album_type: "album,single")
     if (ids = batch.map(&:id)).any?
-      albums = albums.concat(RSpotify::Album.find(ids))
+      titles = RSpotify::Album.find(ids).select do |x|
+        x.available_markets.include?("US")
+      end.map do |album|
+        "#{album.release_date} - #{album.artists.map(&:name).join(", ")} - #{album.name} - #{album.external_urls["spotify"]}"
+      end
+
+      results.push(*titles)
     end
 
     if batch.count < 20
@@ -42,23 +48,19 @@ releases = artists.flat_map do |artist|
       offset = offset + 20
     end
 
-    sleep 2
+    sleep 1
   end
 
-  albums
+  results
 end
 
 puts "Albums: #{releases.count}"
 
-titles = releases.select do |x|
-  x.available_markets.include?("US")
-end.map do |album|
-  "#{album.release_date} - #{album.artists.map(&:name).join(", ")} - #{album.name} - #{album.external_urls["spotify"]}"
-end.uniq.sort.join("\n") + "\n"
-
-cache = File.exists?("./cache") ? File.read("./cache") : ""
+titles = releases.uniq.sort.join("\n") + "\n"
+cache_file = ENV["DEBUG"] ? "./cache-debug" : "./cache"
+cache = File.exists?(cache_file) ? File.read(cache_file) : ""
 
 puts "Diff:"
 puts Diffy::Diff.new(cache, titles, context: 0)
 
-File.open("./cache", "w") { |f| f.write(titles) }
+File.open(cache_file, "w") { |f| f.write(titles) }
