@@ -1,14 +1,15 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (4.2.3)
-      i18n (~> 0.7)
-      json (~> 1.7, >= 1.7.7)
+    activesupport (6.0.3.4)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
       minitest (~> 5.1)
-      thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
+      zeitwerk (~> 2.2, >= 2.2.2)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    concurrent-ruby (1.1.7)
     diffy (3.1.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -18,13 +19,13 @@ GEM
     hashie (4.1.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    i18n (0.7.0)
-    json (1.8.6)
+    i18n (1.8.7)
+      concurrent-ruby (~> 1.0)
     jwt (2.2.2)
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2020.0512)
-    minitest (5.4.3)
+    minitest (5.14.3)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -51,18 +52,19 @@ GEM
       addressable (~> 2.5.2)
       omniauth-oauth2 (~> 1.5.0)
       rest-client (~> 2.0.2)
-    thread_safe (0.3.5)
-    tzinfo (1.2.2)
+    thread_safe (0.3.6)
+    tzinfo (1.2.9)
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.7)
+    zeitwerk (2.4.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  activesupport (~> 4.2.0)
+  activesupport (~> 6.0.0)
   diffy (~> 3.1.0)
   dotenv (~> 2.0.0)
   rspotify (~> 2.9.0)
