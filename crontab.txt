@@ -1,2 +1,2 @@
-MAILTO="dmitry@krasnoukhov.com"
+MAILTO="krasnoukhov@me.com"
 0 8 * * * /application/script.sh #>>/application/test.log 2>&1
