@@ -36,7 +36,7 @@ releases = artists.flat_map do |artist|
       titles = RSpotify::Album.find(ids).select do |x|
         x.available_markets.include?("US")
       end.map do |album|
-        "#{album.release_date} - #{album.artists.map(&:name).join(", ")} - #{album.name} - #{album.external_urls["spotify"]}"
+        "#{album.release_date} [#{album.album_type}] #{album.artists.map(&:name).join(", ")} - #{album.name} - #{album.external_urls["spotify"]}"
       end
 
       results.push(*titles)
